@@ -1,0 +1,84 @@
+/////////////////
+sfrob comparisons
+/////////////////
+
+1. Testing sfrob with test data from Assignment 4
+and Assignment 5
+
+	Assignment 4:
+	time printf '*~BO *{_CIA *hXE]D *LER #@_GZY #E\\OX #^BO #FKPS #NEM\4' | ./sfrob | od -ta
+
+	real: 0m0.004s
+	user: 0m0.001s
+	sys:  0m0.003s
+
+	Assignment 5:
+	time printf '~BO {_CIA FKPS NEM' | ./sfrob | od -ta
+
+	real: 0m0.002s
+	user: 0m0.003s
+	sys:  0m0.001s
+
+	Assignment 5 (>5MB file)
+	time ./sfrob < input.txt
+
+	real: 0m17.049s
+	user: 0m1.719s
+	sys:  0m1.357s
+
+2. Testing sfrobu with test data from Assignment 4
+and Assignment 5 
+
+	Assignment 4:
+	time printf '*~BO *{_CIA *hXE]D *LER #@_GZY #E\\OX #^BO #FKPS #NEM\4' | ./sfrobu | od -ta
+
+	real: 0m0.003s
+	user: 0m0.002s
+	sys:  0m0.003s
+
+	Assignment 5:
+	time printf '~BO {_CIA FKPS NEM' | ./sfrobu | od -ta
+
+	real: 0m0.004s
+	user: 0m0.002s
+	sys:  0m0.002s
+
+	Assignment 5 (>5MB file)
+	time ./sfrobu < input.txt
+
+	real: 0m18.214s
+	user: 0m2.194s
+	sys:  0m7.289s
+
+3. Testing sfrobs
+
+	Assignment 4:
+	time printf '*~BO *{_CIA *hXE]D *LER #@_GZY #E\\OX #^BO #FKPS #NEM\4' | ./sfrobs | od -ta
+
+	real: 0m0.011s
+	user: 0m0.004s
+	sys:  0m0.007s
+
+	Assignment 5:
+	time printf '~BO {_CIA FKPS NEM' | ./sfrobs | od -ta
+
+	real: 0m0.006s
+	user: 0m0.005s
+	sys:  0m0.005s
+
+	Assignment 5 (>5MB file)
+	time ./sfrobs < input.txt
+
+	real: 0m17.432s
+	user: 0m0.355s
+	sys:  0m0.725s
+
+The time taken for small transliterations for both sfrob and sfrobu are both negligible and make it hard to compare.
+This hints that for small file sizes, there is no significant
+different in time.
+However, there is a clear difference in the time taken by the system to run input.txt
+sfrob has fewer system calls, and takes significantly lesser time
+from the system calls perspective in comparison to sfrobu.
+Therefore, for larger file sizes, unbuffered is realtively not as optimal.
+sfrobs is much faster with larger files and has fewer system calls indicated by the shortest time for system calls 
+This indicates that shell scripts are more efficient.

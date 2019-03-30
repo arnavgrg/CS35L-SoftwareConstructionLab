@@ -1,0 +1,52 @@
+/////////
+hw.txt
+/////////
+
+1. The network would still be secure, since it uses 
+	assymetric encryption. This involves a key pair, where
+	one key can encrypt (public key) and the other key can decrypt 
+	(private key). Therefore, the data sent by the user 
+	is encrypted using the receiver's public key. This public 
+	key is available to everyone. However, to actually decrypt 
+	the data being sent, one would need the receiver's private 
+	key, which is only available/known to the receiver. 
+	Therefore, other teams will not be able to decipher the 
+	encrypted data since they do not have access to the private key.
+
+	(1) Since they only tap in the keyboard after the client-
+	server setupthey DO NOT have access to the passphrases 
+	used to create user IDs, or the passphrase used to 
+	generate the private key (ssh-keygen). Therefore, the 
+	network would still be secure. You will need to check 
+	that the keyboard is secure and not being tapped into.
+
+	(2) If they had access to the USB, then they could access
+	the .ssh folder in the root directory, which contains a 
+	copy of the public key and private key. Since they have 
+	access to both of these, they can decrypt and encrypt 
+	all messages at free will. This compromises the network.
+
+2.  gpg2 --verify does not verify who owns the original data.
+	It only compares the decrypted signature to the decrypted 
+	data sent (using the sender's public key). This data can be 
+	intercepted and changed. 
+
+	The process works something like this:
+	First, the user signs the data, and this data is then 
+	encrypted and sent. If it is intercepted on the way, the data
+	can be overwritten, and the person who intercepts the data 
+	(usually with malicious intentions) can sign it and send his/her 
+	public key with the changed data instead of the 
+	sender's public key. When the receiver receives the data and
+	uses the --verify command, it will let us know that it was
+	intercepted by someone else, but it will not tell us who  
+	originally signed the data. 
+
+	Therefore, there must be the creation of a potential trusted 
+	third party who can keep track of who originally signed the 
+	file, as well as maintain a copy of the original data. One 
+	way to do this is use certificates. If the certificate is
+	edited, then we know that the data was intercepted and edited
+	on the network on the way to the receiver. 
+
+

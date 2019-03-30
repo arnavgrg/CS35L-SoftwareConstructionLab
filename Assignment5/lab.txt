@@ -1,0 +1,181 @@
+///////////
+Assignment 5
+Arnav Garg
+304911796
+///////////
+
+During our discussion in class, I learned that the way to 
+pass in arguments into a C program is to change the way we 
+define our main function from 'int main()' to 'int main(int argc, char** argv)'. 
+int argc represents the number of arguments passed in + 1 since
+the name of the program is considered to be an arguments as well.
+char** argv is essentially a vector of pointers to the arguments.
+
+///////////
+1. => tr2b.c 
+///////////
+
+Since 2 arguments (from and to) must be passed in, the total no.
+of arguments must be 3 (including the program name). Therefore,
+I first ensured that the number of arguments being passed in from
+the command line = 3. I did this by checking if argc == 3. If it isn't
+the program will print to stderr and exit with code 1.
+
+Next, I check to see if the two input character arrays are of equal length. 
+Since argv is a vector of pointers, we can set char* from = argv[1] and char* to = argv[2]. 
+If from and to are equal, the program steps into the if function. This was checked using strlen(from) == strlen(to).
+Otherwise, the program writes to stderr and returns with exit code 1.
+
+Next, I had to check if the from character array had duplicate characters in its set.
+For this, I wrote a loop that goes through every character 
+of the from argument, and checks if any successive characters are the same as the current character.
+If it does, it prints the error to stderr and exits with code 1.
+
+If the arguments pass all three checks mentioned above, we can proceed. 
+
+I created a temporary int and called the getchar() method on it to read from stdin. 
+The loop reads character by character until EOF (which is also an int, which allows for correct data type comparison).
+The loop:
+	1. Checks if input character is in from.
+	2. If it is, it writes the transliteration in 'to' to stdout.
+	3. If it isn't, it writes the character as it is.
+	4. Calls putchar() to write to stdout.
+	5. Calls getchar() to get to the next character.
+
+I compiled this program using:
+gcc -std=c11 tr2b.c -o tr2b
+
+///////////
+2. => tr2u.c 
+///////////
+
+Since the logic flow is almost the same for tr2b.c and tr2b.u, I decided to make a copy of tr2b.c using cp tr2b.c tr2u.c.
+The only elements that change are the input and output methods, because they are supposed to unbuffered and involve direct system calls.
+
+In place of the getchar() method, I created a 1 byte character buffer. 
+Then I called read(0,present,1): 
+	- 0 to read from stdin
+	- present to call the buffer where I wanted the byte to be stored
+	- 1 to read only 1 byte at a time from stdin
+Since the read function returns -1 only if there is an error or if there is a signal interruption, the for loop runs into the state variable > 0. 
+
+In place of the putchar() method, I used the write method by calling the command write(1,present,1).
+	- 1 represents writing to stdout
+	- present to call the buffer where the byte is stored
+	- 1 to output only one byte to stdout
+
+I compiled this program using:
+gcc -std=c11 tr2u.c -o tr2u
+
+/////////////
+     3.
+/////////////
+
+Before proceeding with question 3 of the lab, I tested both of my programs. 
+According to the important "Notes and Guidelines" for this Assignment, I ran the following commands:
+echo 'ab\nde-f' | ./tr2b 'a\n-' 'z@m+' 
+echo 'ab\nde-f' | ./tr2u 'a\n-' 'z@m+'
+In both cases, I got the output as zb@mde+f, which was correct.
+
+Since the spec required me to use a file with 5,000,000 bytes, I had to create such a file. To do this, I wrote
+the following C program (called testfile.c):
+	
+#include <stdio.h>
+void main(void){
+  int count;
+  for(count = 1; count <= 1000000; count++){
+    printf("%d ", count);
+    printf("\n");
+  }
+}
+
+I then compiled this file using gcc testfile.c -o testfile
+Then I used to command ./testfile > input.txt to save the program's output.
+I used ls -lh to confirm the file size was larger than 5,00,000 bytes (input.txt is 7.6M > 5,000,000).
+
+I then read through the man page for strace.
+I decided to use the -c flag since it counts time, calls and errors for each system calls and reports a summary on program exit.
+I used the -o flag to write the trace output to a file rather than to stderr.
+
+I then ran the following commands:
+   1. strace -c -o strace1.txt ./tr2b '1' '0' < input.txt > outputb.txt
+   2. strace -c -o strace2.txt ./tr2u '1' '0' < input.txt > outputu.txt
+   3. strace -c -o strace3.txt ./tr2b '1' '0' < input.txt
+   4. strace -c -o strace4.txt ./tr2u '1' '0' < input.txt
+
+Comparing the output of each of the 4 strace.txt files:
+   
+   1. This command checks/tracks system calls made by tr2b when the command is made to copy its output to a file. 
+   After opening strace1.txt using emacs, I saw the following information:
+   	- Total System calls: 1954
+   	- Write Calls: 963
+   	- Read Calls: 965
+   
+   2. This command checks/tracks system calls made by tr2u when the command is made to copy its output to a file. 
+   After opening strace2.txt using emacs, I saw the following information:
+   	- Total System calls: 15777816
+   	- Write Calls: 7888896
+   	- Read Calls: 7888898
+   
+   3. This command checks/tracks system calls made by tr2b when the command is made to copy its output to the terminal, that is, it prints it out to the terminal rather than in a file.
+   After opening strace3.txt using emacs, I saw the following information:
+   	- Total System calls: 1000991
+   	- Write Calls: 1000000
+   	- Read Calls: 965
+   It is interesting to note that the number of read calls is the same as 1., but there are more write calls. Maybe this is because the system needs wrote write calls to write to the terminal.
+   
+   4. This command checks/tracks system calls made by tr2u when the command is made to copy its output to the terminal, that is, it prints it out to the terminal rather than in a file.
+   After opening strace4.txt using emacs, I saw the following information:
+   	- Total System calls: 15777816
+   	- Write Calls: 7888896
+   	- Read Calls: 7888898
+   These numbers are exactly the same as 2. This is probably because unbuffered programs write each character to the output rather than redirecting it.
+   Therefore, irrespective of whether it is the terminal or copying the output into another file, the system calls will be the same (the maximum possible amount).
+
+///////////////
+	   4.
+///////////////
+
+I use man time to understand the time command. 
+
+1. I tested tr2b, while copying ouput to an output text file:
+	time cat input.txt | ./tr2b '1' '0' > outputb.txt
+
+	real: 0m0.306s
+	user: 0m0.223s
+	sys:  0m0.026s
+
+2. Using tr2u:
+	time cat input.txt | ./tr2u '1' '0' > outputu.txt
+
+	real: 0m16.085s
+	user: 0m1.922s
+	sys:  0m14.165s
+
+3. time cat input.txt | ./tr2b '1' '0'
+
+	real: 0m14.946s
+	user: 0m0.524s
+	sys:  0m1.294s
+
+4. time cat input.txt | ./tr2u '1' '0'
+
+	eal: 0m15.320s
+	user: 0m2.003s
+	sys:  0m12.275s
+
+Consistent with the observations from the strace command, unbuffered takes longer than buffered. 
+Additionally, in the case of buffered, it takes much longer to output to the terminal than to output to a file. This is probably due to the increase in number of write calls.
+
+
+
+
+
+
+
+
+
+
+
+
+

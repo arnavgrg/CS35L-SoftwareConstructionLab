@@ -1,0 +1,78 @@
+Exercises 1.1
+1. emacs exer1.html
+2. C-s H T M L
+3. C-s s c a v e n g e r M-b
+4. C-s s e l f - r e f e r n t i a l M-b M-b
+5. C-s a r r o w M-b
+6. C-e7. C-a
+8. You can use the following emacs shortcuts:
+   C-s H T M L
+   C-s s c a v e n g e r M-b
+   C-s s e l f - r e f e r n t i a l M-b M-b
+   C-s a r r o w M-b
+   C-e
+   C-a
+9. No, I moved the cursor using emacs keyboard shortcuts.
+10. C-x C-c y
+
+
+Exercise 1.2
+1. emacs exer2.html
+2. C-s < ! - - C-a C-k OR M-g g Enter 1 8 C-k
+3. C-s D E L C-a C-k
+4. C-s # C o m m e n t s C-s C-a C-p C-k C-n C-k C-n C-k
+5. First Comment: C-s < ! - C-b C-b C-d C-d C-d C-d C-d C-d C-d
+   Second Comment (after deleting the first): C-n C-a C-k C-n C-k C-n C-k C-n C-k
+   Third Comment (after deleting the second): C-s < ! - C-a C-k
+Exit Emacs: C-x C-c y
+
+
+Exercise 1.3
+1. emacs exer3.html
+2. C-s A s s i g n m e n t SP 1 M-% A s s i g n m e n t SP 2 1 Enter y y n
+3. M-< C-s U T F - 8 M-% U S - A S C I I Enter y n
+4. C-M-r [ ^ [ : a s c i i : ] ] Enter C-a C-k
+5. C-s < / o l > C-o
+6. C-x C-s y
+
+
+Exercise 1.4
+1. cat exer2.html exer
+2.diff >exer4.html2. emacs exer4.html
+3. & 4. M-> C-r < ! - - Enter C-SP C-e M-w M-g g 4 0 0 C-y M-> C-r < ! C-r Enter C-SP C-e M-w M-g g 3 7 9 C-y M-> C-r < ! C-r C-r Enter C-SP C-e M-w M-g g 3 3 5 C-y M-> C-r < ! C-r C-r C-r Enter C-SP C-e M-w M-g g 1 2 2 C-y M-> C-r < ! C-r C-r C-r C-r Enter C-SP C-e M-w M-g g 1 5 C-y
+5. C-s - - - C-a C-SP M-> Left C-d
+6. C-x u
+7. < ! - - M-> - - >
+8. M-> C-r < o l > C-r C-r C-r C-r C-r C-r
+   7 instances
+   M-< M-x replace-string Enter <ol> Enter <OL> Enter
+9. C-x C-c y
+
+
+Exercise 1.5
+1. M-x m a k e - d i r e c t o r y Enter / u / c s / u g r a d / a r n a v / j u n k Enter
+2. M-x d i r e d Enter j u n k C-x C-f h e l l o . c
+3. M-x c o m p i l e Enter C-a C-k g c c SP - o SP h e l l o SP h e l l o . c Enter
+4. C-x C-f / j u n k / h e l l o - o u t Enter C-u M-! . / t e m p Enter C-x C-s
+5. C-x C-f / j u n k / h e l l o - o u t Enter C-x h M-w C-x C-f C-a C-k / D E S K T O P / C S 3 5 L / A s s i g n m e n t SP 1 / . t x t Enter M-> C-y M-y
+#include <stdio.h>
+int
+main (void)
+ {
+   char n = '\n', b = '\\', q = '"';
+   char const *p = "#include <stdio.h>%cint%cmain (void)%c{%c  char n = '%cn', b = '%c%c', q = '%c';%c  char const *p = %c%s%c;%c  printf (p, n, n, n, n, b, b, b, q, n, q, p, q, n, n, n, n);%c  return 0;%c}%c";
+   printf (p, n, n, n, n, b, b, b, q, n, q, p, q, n, n, n, n);
+   return 0;
+ }
+
+
+Exercise 1.6
+1. C-x b * s c r a t c h *
+2. ( r a n d o m SP " 3 0 4 - 9 1 1 - 9 7 6 " )  1793718471193603317
+3. ( s e t q SP x SP ( r a n d o m ) ) 	1536577910091862579
+   ( s e t q SP y SP ( r a n d o m ) ) 	1307073555305475734
+4. ( * SP x SP y ) 	611565649044853730
+   It is not the mathematically correct answer. This is because the multiplication causes an overflow and the result displays an translation of the overflow.
+5. The answer returned is the same. It also displays the two memory addresses.
+6. The numbers generated are pseudo-random. A seed is passed into a random number generator to produce these numbers. However, the seed by itself is not random.
+7. The probability is approximately 1. This means that the multiplication will almost always be wrong. Since each integer is 4 bytes long, it will consist of 32 bits. Using conditional probability, and thinking about the possible integers in terms of their bits and ranges, we can calculate this probability using (2*((2^31 - 2^30)/2^31))-1 = 1.

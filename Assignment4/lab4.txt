@@ -1,0 +1,141 @@
+////////////
+Lab4
+////////////
+
+I ran the command 
+wget https://web.cs.ucla.edu/classes/spring18/cs35L/assign/coreutils-with-bug.tar.gz 
+to save this tarball file into my home directory. 
+
+Next, I used command tar -xzvf coreutils-with-bug.tar.gz to uncompress the tarball file.
+This uncompresses all the files and saves it in a folder called coreutils-with-bug
+
+I then created a directory called coreutilsInstall using the command mkdir coreutilsInstall.
+
+I cd'd into the folder using the command cd coreutils-with-bug. Here I ran the commands 
+./configure --prexif=/u/cs/ugrad/arnav/coreutilsInstall
+make
+make install
+During make, there seems to be an error:
+"utimens.h:2:5: error: conflicting types for 'futimens'" which appears to be a part
+of the function prototype/function definition
+
+When this did not work, I used wget to download the patch file into the coreutils-with-bugs
+folder using wget https://web.cs.ucla.edu/classes/spring18/cs35L/assign/coreutils.diff
+This saves coreutils.diff into the folder.
+
+I then applied the patch using the command patch -p0 < coreutils.diff within 
+the coreutils-with-bugs folder.
+The patch was successfull applied, and patched utimens.c, utimens.h, copy.c, tee.c, touch.c
+
+After applying the patch, I ran the commands 
+./configure --prefix=/u/cs/ugrad/arnav/coreutilsInstall
+make
+make install
+These commands worked without an error. 
+On inspection of the coreutils.diff file, I noticed that this was because 'futimens' 
+was renamed to 'coreutils_futimens'. This prevented it from being redeclared.
+
+Next, I cd'd into coreutilsInstall, where coreutils with the patch is installed. 
+I ran the commands outlined in the spec to reproduce the problem.
+	1 tmp=$(mktemp -d)
+    2 cd $tmp
+    3 touch -d '1918-11-11 11:00 GMT' wwi-armistice
+    4 touch now
+    5 sleep 1
+    6 touch now1
+    7 TZ=UTC0 ./bin/ls -lt --full-time wwi-armistice now now1
+
+This produced the following output:
+-rw-r--r-- 1 arnav csugrad 0 1918-11-11 11:00:00.000000000 +0000 wwi-armistice
+-rw-r--r-- 1 arnav csugrad 0 2018-05-05 22:16:04.394570101 +0000 now1
+-rw-r--r-- 1 arnav csugrad 0 2018-05-05 22:15:55.479326128 +0000 now
+Since the files should be arranged in decreasing order of newness based on the time they were created, 
+there is an error because 1918 does ntcome before 2018.
+
+To debug, I decided to use gdb and ran the command
+gdb ~/coreutils-with-bug/src/ls
+On a separate terminal window, I opened the source code
+ls by navigating to cd coreutils-with-bug/src/ and then running emacs ls.c
+
+Going through all the function prototypes, I noticed several functions that could possibly provide me with the answer I was looking for.
+I therefore set breakpoints on the functions:
+break print_current_files
+break sort_files
+
+I then ran the ls command within the gdb shell:
+run -lt --full-time wwi-armistice now now1
+
+I noticed that my breakpoint at 'sort_files' occured before the breakpoint at 'print_current_files'.
+This indicated that the files were first sorted before they were printed
+
+As I continued to step through the function using the step command, 
+I noticed that the function has a switch statement that takes in sort_type which goes into the case caled sort_time.
+The switch within sort time takes in a time_type, and in this particular case, goes into the case time_mtime. 
+The if condition here is false because sort_reverse is false.
+This calls the function compare_mtime.
+
+I then set a breakpoint on the function compare_mtime:
+break compare_mtime
+
+I stepped throuh this function and noticed that it calls timespec_cmp from timespec.h. 
+I used the list command to see the makeup of this function.
+It is evident that the function is subtracting the two time values.
+The comments section right above state that the function
+intends to return:
+	-> A positive number if A>B
+	-> 0 if A==B
+	-> Negative number if A<B
+
+Documentation above #define longdiff says that subtracting
+doesn't aloways work, due to integer overflow during subtraction.
+Instead, I decided to use 1, 0 and -1 and run direct comparisons.
+
+Now, to fix this bug and generate the required diff file, I created a copy of coreutils-with-bug/lib/timespec.h in coreutils-with-bug/timespec.h.
+
+I then edited timespec.h within coreutils-with-bug using emacs.
+emacs timespec.h. I edited the timespec_cmp function to:
+return a.tv_sec > b.tv_sec ? 1 : a.tv_sec < b.tv_sec ? -1 : a.tv_nsec - b.tv_nsec;
+
+To create the diff file, I run the command:
+diff -u lib/timespec.h timespec.h > patch-ls.diff
+
+To create the ChangeLog entry, I used the emacs command 
+C-x 4 a after running emacs timespec.h from the coreutils-with-bug directory. 
+The following was my ChangeLog entry:
+
+2018-05-05  Arnav Garg  <arnav@lnxsrv07.seas.ucla.edu>
+
+        * timespec.h:
+        timespec_cmp: To prevent overflow due to subtraction, replace the subtraction with direct comparisons to 0, 
+        1 and -1. If seconds are equal, compare with nanoseconds. This prevents overflow due to subraction.
+
+After saving this using C-x C-s, it create a ChangeLog file within the folder with the contents listed above.
+
+To create the file lab4.diff, I copy the content from ChangeLog and patch-ls.diff into lab4.diff.
+cat ChangeLog > lab4.diff
+cat patch-ls.diff >> lab4.diff
+
+I changed the file path from timespec.h to lib/timespec.h to allow us to run it from the coreutils-with-bug dir.
+
+I then patched it using patch -p0 < lab4.diff
+
+I then ran the configure and make command to recompile the files with the changes made from this patch. 
+
+After running the same set of 7 commands given in the spec, now roduces the correct output: 
+-rw-r--r-- 1 arnav csugrad 0 2018-05-05 23:45:15.394570101 +0000 now1
+-rw-r--r-- 1 arnav csugrad 0 2018-05-05 23:45:35.479326128 +0000 now
+-rw-r--r-- 1 arnav csugrad 0 1918-11-11 11:00:00.000000000 +0000 wwi-armistice
+
+Running the same set of 7 commands in my parent directory on the SEASNET server,
+I notice that wwi-armistice is created with a date in the future.
+-rw-r--r-- 1 arnav csugrad 0 2054-12-17 09:28:16.000000000 -0800 wwi-armistice
+-rw-r--r-- 1 arnav csugrad 0 2018-02-10 23:48:58.232394000 -0800 now1
+-rw-r--r-- 1 arnav csugrad 0 2018-02-10 23:48:54.469045000 -0800 now
+
+Unix uses Unix Epoch Time, which starts on 1st January 1970.
+All files saved on Unix after this date will show the correct date since it assumed 86400 seconds in any given day. 
+The issue however arrises when you try to save a file with a machine time that is before Jan 1 1970. 
+To confirm, I created another file using the touch command dated 1947-08-15 11:00 GMT, which created a file in 2085. 
+
+Looking through the slides provided to use for an answer, I learned that SEASnet files have 32-bit timestamp, which local files on linux have a 64-bit time stamp.
+The unsigned 32-bit time stamp prevents negative values, since it can't over flow (have negative machine times because < Jan 1 1970). 

@@ -1,0 +1,53 @@
+Name: Arnav Garg, 304911796
+Lab Partner: Siddharth Joshi, 105038378
+
+Setup my beagleone by following the instructions:
+https://piazza.com/class/jfinlsjb34f3vc?cid=282
+
+Followed steps to install openSSH from slides
+sudo apt-get update
+sudo apt-get install openssh-server
+sudo apt-get install openssh-client
+
+I then created my public and private keys using:
+ssh-keygen (saved it in /root/.ssh/id_rsa)
+File Name: privateKey
+My Identification: privateKey
+My PublicKey: privateKey.pub
+Key FingerPrint: 6d:7a:40:bd:3a:65:62:db:5a:7f:ca:4f:73:04:a8:69 root@beaglebone
+
+Followed the server steps mentioned on the slides. First I read the man page for useradd.
+Then I created a user for my lab partner Sid. 
+sudo useradd -d /home/sid -m sid
+sudo passwd sid
+Enter new UNIX password: sid
+
+Steps to allow Sid to SSH into my BeagleBone:
+cd /home/sid
+sudo mkdir .ssh
+sudo chown -R sid .ssh
+sudo chmod 700 .ssh
+
+Used ifconfig to find the IP of the server and gave this to my partner Sid.
+
+By this point, Sid created a user called 'arnav' on his 
+BeagleBone, and also used the same steps as above to setup his server. 
+
+Since the wifi kept refusing permission to SSH successfully,
+and to get past the firewall, we decided to use a mobile hotspot. 
+After swapping wifi connections to the phone, we were able to run the 
+following commands successfully:
+
+Attempting to login using password:
+ping 192.168.43.20
+ssh arnav@192.168.43.20
+This presents two warnings, where it adds the server address to list of known hosts. 
+I was able to create directories and files.
+
+Attempting to ssh successfully without a password:
+ssh-copy-id -i arnav@192.168.43.20
+eval "$(ssh-agent -s)" -> done to enable ssh-agent
+ssh-add -> adds private key to the ssh-agent.
+ssh arnav@169.232.100.80
+This works successfully and it says:
+Number of key(s) added: 1

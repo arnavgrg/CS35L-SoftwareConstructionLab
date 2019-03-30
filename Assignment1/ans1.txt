@@ -1,0 +1,165 @@
+1. man -k
+Explain: man man
+
+2. which cp
+   which sh
+Explain: man which
+
+3. find -name '?' -executable
+Explain: man find, find --help
+
+4. readlink /usr/bin/emacs
+Explain: man readlink, man -l readlink
+
+5. /usr/bin:- Version No. 25.3.1
+   :- Version No. 25.3.1
+   The two programs have the same version, but are actually two unique instances of emacs.
+Explain: man emacs, emacs -version
+
+6. chmod g+s, o-x is used to change the permissions of different files. In this case, it sets the group ID (setgid) upon execution. Therefore it runs the executable with the permissions of the group. the o-x removes the execution permissions for others.
+Explain: man chmod
+
+7. find /usr/local/cs -type d -mtime -30
+/usr/local/cs
+/usr/local/cs/src/automake
+/usr/local/cs/src/automake/RCS
+/usr/local/cs/src/emacs
+/usr/local/cs/src/emacs/RCS
+/usr/local/cs/src/help2man
+/usr/local/cs/src/help2man/RCS
+/usr/local/cs/share/info
+/usr/local/cs/share/man/man1
+/usr/local/cs/bin
+/usr/local/cs/automake-1.16.1
+/usr/local/cs/automake-1.16.1/share
+/usr/local/cs/automake-1.16.1/share/automake-1.16
+/usr/local/cs/automake-1.16.1/share/automake-1.16/am
+/usr/local/cs/automake-1.16.1/share/automake-1.16/Automake
+/usr/local/cs/automake-1.16.1/share/aclocal-1.16
+/usr/local/cs/automake-1.16.1/share/aclocal-1.16/internal
+/usr/local/cs/automake-1.16.1/share/doc
+/usr/local/cs/automake-1.16.1/share/doc/automake
+/usr/local/cs/automake-1.16.1/share/info
+/usr/local/cs/automake-1.16.1/share/aclocal
+/usr/local/cs/automake-1.16.1/share/man
+/usr/local/cs/automake-1.16.1/share/man/man1
+/usr/local/cs/automake-1.16.1/bin
+/usr/local/cs/help2man-1.47.6
+/usr/local/cs/help2man-1.47.6/bin
+/usr/local/cs/help2man-1.47.6/lib
+/usr/local/cs/help2man-1.47.6/lib/help2man
+/usr/local/cs/help2man-1.47.6/share
+/usr/local/cs/help2man-1.47.6/share/man
+/usr/local/cs/help2man-1.47.6/share/man/man1
+/usr/local/cs/help2man-1.47.6/share/info
+/usr/local/cs/emacs-25.3
+/usr/local/cs/emacs-25.3/share
+/usr/local/cs/emacs-25.3/share/info
+/usr/local/cs/emacs-25.3/share/man
+/usr/local/cs/emacs-25.3/share/man/man1
+/usr/local/cs/emacs-25.3/share/applications
+/usr/local/cs/emacs-25.3/share/appdata
+/usr/local/cs/emacs-25.3/share/icons
+/usr/local/cs/emacs-25.3/share/icons/hicolor
+/usr/local/cs/emacs-25.3/share/icons/hicolor/128x128
+/usr/local/cs/emacs-25.3/share/icons/hicolor/128x128/apps
+/usr/local/cs/emacs-25.3/share/icons/hicolor/16x16
+/usr/local/cs/emacs-25.3/share/icons/hicolor/16x16/apps
+/usr/local/cs/emacs-25.3/share/icons/hicolor/24x24
+/usr/local/cs/emacs-25.3/share/icons/hicolor/24x24/apps
+/usr/local/cs/emacs-25.3/share/icons/hicolor/32x32
+/usr/local/cs/emacs-25.3/share/icons/hicolor/32x32/apps
+/usr/local/cs/emacs-25.3/share/icons/hicolor/48x48
+/usr/local/cs/emacs-25.3/share/icons/hicolor/48x48/apps
+/usr/local/cs/emacs-25.3/share/icons/hicolor/scalable
+/usr/local/cs/emacs-25.3/share/icons/hicolor/scalable/apps
+/usr/local/cs/emacs-25.3/share/icons/hicolor/scalable/mimetypes
+/usr/local/cs/emacs-25.3/share/emacs
+/usr/local/cs/emacs-25.3/share/emacs/25.3
+/usr/local/cs/emacs-25.3/share/emacs/25.3/etc
+/usr/local/cs/emacs-25.3/share/emacs/25.3/etc/refcards
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/leim/quail
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/leim/ja-dic
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/emulation
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/gnus
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/vc
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/url
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/calendar
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/nxml
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/emacs-lisp
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/mh-e
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/eshell
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/term
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/mail
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/language
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/progmodes
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/obsolete
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/textmodes
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/erc
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/net
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/org
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/cedet
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/cedet/semantic
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/cedet/semantic/symref
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/cedet/semantic/decorate
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/cedet/semantic/analyze
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/cedet/semantic/wisent
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/cedet/semantic/bovine
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/cedet/srecode
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/cedet/ede
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/international
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/play
+/usr/local/cs/emacs-25.3/share/emacs/25.3/lisp/calc
+/usr/local/cs/emacs-25.3/share/emacs/25.3/site-lisp
+/usr/local/cs/emacs-25.3/share/emacs/site-lisp
+/usr/local/cs/emacs-25.3/bin
+/usr/local/cs/emacs-25.3/libexec
+/usr/local/cs/emacs-25.3/libexec/emacs
+/usr/local/cs/emacs-25.3/libexec/emacs/25.3
+/usr/local/cs/emacs-25.3/libexec/emacs/25.3/x86_64-pc-linux-gnu
+/usr/local/cs/emacs-25.3/var
+/usr/local/cs/emacs-25.3/var/games
+/usr/local/cs/emacs-25.3/var/games/emacs
+Explain: man find, find --help
+
+8. whereis find
+   find /usr/bin -type l
+Explain: man whereis, man find
+
+9. find . -type f -printf '%T+ %p\n" | sort | head -1 | grep "^."
+   Oldest File: /tcl8.5/Tix8.4.3/bitmaps/act_fold.gif
+Explain: man find, man sort, man head, man grep
+
+10. localedef
+    localedef --usage
+	locale gets its data from localedef, which compiles locale definition files.
+Explain: man locale, man localedef
+
+11. M-x downcase
+    downcase-dwim
+	downcase-region
+	downcase-word
+Explain: C-h w M-x
+
+12. C-h k C-M-r
+    Does an incremental search backward for regular expressions. With a prefix argument, does a regular string search instead.
+	C-h k C-M-v
+	Runs the command scroll-other-window.Scroll next window upward ARG lines; or near full screen if no ARG.
+Explain: C-h w C-h k, C-h w C-M-r, C-h w C-M-v
+
+13. C-h k C-g
+    It is used to cancel/abort any action that has been started. This includes abborting a search, a partially executed command or a minibuffer.
+Explain: C-h w C-g
+
+14. C-h w yank ENTER (helps us find the name of the extended command and keyboard shortcut).
+    C-h k C-y
+	Reinsert ("paste") the last stretch of killed text. More precisely, reinsert the most recent kill.
+Explain: C-h w yank
+
+15. man ls
+    C-h w dired
+    C-h k C-x d
+    ls -l prints a list of all files in the current directory that do not start with '.' or are hidden.
+    dired prints all files that start with '.' and hidden files in the directory.
+Explain: man ls, C-h w dired, C-h k C-x d, man ls

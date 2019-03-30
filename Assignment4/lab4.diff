@@ -1,0 +1,19 @@
+2018-05-05  Arnav Garg  <arnav@lnxsrv07.seas.ucla.edu>
+
+	* timespec.h: 
+	timespec_cmp: To prevent overflow due to subtraction, replace the subtraction with direct comparisons to 0, 1 and -1. 
+	If seconds are equal, compare with nanoseconds. This prevents overflow due to subraction. 
+--- lib/timespec.h	2005-09-21 23:05:39.000000000 -0700
++++ lib/timespec.h	2018-05-05 17:07:23.322024000 -0700
+@@ -45,8 +45,9 @@
+ static inline int
+ timespec_cmp (struct timespec a, struct timespec b)
+ {
+-  int diff = a.tv_sec - b.tv_sec;
+-  return diff ? diff : a.tv_nsec - b.tv_nsec;
++  //int diff = a.tv_sec - b.tv_sec;
++  //return diff ? diff : a.tv_nsec - b.tv_nsec;
++  return a.tv_sec > b.tv_sec ? 1 : a.tv_sec < b.tv_sec ? -1 : a.tv_nsec - b.tv_nsec;
+ }
+ 
+ # if ! HAVE_DECL_NANOSLEEP
